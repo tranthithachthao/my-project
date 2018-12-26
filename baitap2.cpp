@@ -26,10 +26,57 @@ int stt = 0;
 	return stt;
 		
 }
+ngaythang NgayTuSTT(int stt, int nam){
+	ngaythang ngaycantim;
+	int i =1;
+	while(stt > thang[i])
+	{
+			stt -= thang[i];
+		i++;
+		
+		if(KiemTra(nam) == 1 && i == 2)
+			thang[i] = 29;
+		}
+		ngaycantim.ngay = stt;
+		ngaycantim.thang = i;
+		ngaycantim.nam=nam;
+	    thang[2]=28;
+	return ngaycantim;
+}
+ngaythang TruNgayThang(ngaythang n, int x){
+	//x<=356
+	int kq,nam;
+	if (x < TimSTT(n))
+		 kq = TimSTT(n)-x;
+	else {
+		nam = n.nam-1; 
+		kq = TimSTT(n) + 365 - x;
+		if (KiemTra(n.nam)==1 && (n.thang>2 || (n.thang==2 && n.ngay==29)))
+			kq++;
+		}
+		cout << kq <<endl;
+	return NgayTuSTT(kq,nam);
+}
+
+ngaythang CongNgayThang(ngaythang n, int x)
+{
+	int kq = x + TimSTT(n);
+	int nam = n.nam;
+	if(kq <= 365 )
+		return NgayTuSTT(kq,nam);
+	else if(KiemTra(nam) == 1)
+		if(kq == 366)
+			return 	NgayTuSTT(kq,nam);
+		else
+			return 	NgayTuSTT(kq - 366,nam +1);
+		else
+			return 	NgayTuSTT(kq - 365,nam +1);
+}
 
 int main()
 {
 	string st;
+	int n;
 
 	cout<<"nhap du lieu: ";
 	getline(cin,st);
@@ -62,5 +109,10 @@ if(KiemTra(x.nam) == 1)
 	cout<<endl<<"nam nhuan"<<endl;
 else cout<<"khong phai nam nhuan"<<endl;
 cout<< TimSTT(x) ;
+cout<<endl<<"nhap so nguyen duong ";
+	cin>>n;
+ CongNgayThang(x, n);
+ TruNgayThang(x, n);
+
 	
 }
